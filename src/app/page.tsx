@@ -1,7 +1,9 @@
+import Layout from "@/components/template/Layout";
+
 export default function Home() {
   return (
-    <div className={`flex items-center justify-center h-screen bg-gradient-to-r from-green-500 to-blue-500`}>
-      <div>Home</div>
-    </div>
+    <Layout title="Home" subtitle="Welcome to Next.js!">
+      <h3>Content</h3>
+    </Layout>
   );
 }
