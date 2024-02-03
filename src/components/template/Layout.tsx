@@ -11,10 +11,12 @@ interface LayoutProps {
 const Layout = (props: LayoutProps) => {
     const { title, subtitle, children } = props;
     return (
-        <div>
+        <div className={`flex h-screen w-screen`}>
             <AsideMenu />
-            <TopBar title={title} subtitle={subtitle} />
-            <Content>{children}</Content>
+            <div className={`flex flex-col bg-gray-300 w-full p-7`}>
+                <TopBar title={title} subtitle={subtitle} />
+                <Content>{children}</Content>
+            </div>
         </div>
     )
 }
