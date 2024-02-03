@@ -3,7 +3,7 @@
 const AsideMenu = (props: any) => {
     return (
         <aside>
-            <h1>Menu</h1>
+            <h1 className={`font-primary`}>Menu</h1>
         </aside>
     )
 }

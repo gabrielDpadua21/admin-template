@@ -10,8 +10,8 @@ const Title = (props: TitleProps) => {
 
     return (
         <div>
-            <h1 className={``}>{title}</h1>
-            <h2 className={``}>{subtitle}</h2>
+            <h1 className={`font-primary`}>{title}</h1>
+            <h2 className={`font-primary`}>{subtitle}</h2>
         </div>
     )
 }
