@@ -13,7 +13,7 @@ const Layout = (props: LayoutProps) => {
     return (
         <div className={`flex h-screen w-screen`}>
             <AsideMenu />
-            <div className={`flex flex-col bg-gray-300 w-full p-7`}>
+            <div className={`flex flex-col bg-gray-300 w-full p-7 dark:bg-gray-800`}>
                 <TopBar title={title} subtitle={subtitle} />
                 <Content>{children}</Content>
             </div>
