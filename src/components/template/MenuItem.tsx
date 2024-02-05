@@ -14,7 +14,7 @@ const MenuItem = (props: MenuItemProps) => {
 
     const renderLink = () => {
         return (
-            <div className={`flex flex-col justify-center items-center w-20 h-20 text-gray-600 hover:text-black ${classes}`}>
+            <div className={`flex flex-col justify-center items-center w-20 h-20 text-gray-600 hover:text-black dark:text-gray-200 ${classes}`}>
                 {icon}
                 <span className={`font-primary text-xs font-light`}>{title}</span>
             </div>
