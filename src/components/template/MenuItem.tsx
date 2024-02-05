@@ -4,17 +4,32 @@ import Link from "next/link";
 interface MenuItemProps {
     icon: any;
     title: string;
-    url: string;
+    url?: string;
+    classes?: string;
+    onClick?: () => void;
 }
 
 const MenuItem = (props: MenuItemProps) => {
-    const { icon, title, url } = props;
-    return (
-        <div className={`flex items-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700`}>
-            <Link href={url} className={`flex flex-col justify-center items-center w-20 h-20`}>
+    const { icon, title, url, onClick, classes } = props;
+
+    const renderLink = () => {
+        return (
+            <div className={`flex flex-col justify-center items-center w-20 h-20 text-gray-600 hover:text-black ${classes}`}>
                 {icon}
-                <span className={`font-primary text-xs font-light text-gray-600`}>{title}</span>
-            </Link>
+                <span className={`font-primary text-xs font-light`}>{title}</span>
+            </div>
+        )
+    }
+
+    return (
+        <div onClick={onClick} className={`flex items-center cursor-pointer hover:bg-gray-400 dark:hover:bg-gray-700`}>
+            {url ? (
+                <Link href={url} className={``}>
+                    {renderLink()}
+                </Link>
+            ) : (
+                renderLink()
+            )}
         </div>
     )
 }
