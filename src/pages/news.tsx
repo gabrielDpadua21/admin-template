@@ -1,12 +1,16 @@
 import Layout from "@/components/template/Layout";
+import useAppData from "@/data/hook/useAppData";
 import "@/styles/globals.css";
 
-const news = () => {
+const News = () => {
+
+    const data = useAppData();
+    
     return (
         <Layout title="News" subtitle="News page">
-            <h1>News</h1>
+            <h1>{data.name}</h1>
         </Layout>
     );
 };
 
-export default news;
+export default News;
