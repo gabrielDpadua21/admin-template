@@ -1,19 +1,27 @@
 'use client';
 
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-const AppContext = createContext({
-    name: 'Text Context Api'
-});
+interface AppContextProps {
+    theme?: string;
+    toggleTheme?: () => void;
+}
+
+const AppContext = createContext<AppContextProps>({});
 
 export function AppProvider(props: any) {
+
+    const [theme, setTheme] = useState('light');
+
+    function toggleTheme() {
+        setTheme(theme === 'light' ? 'dark' : 'light');
+    }
+
     return (
-        <AppContext.Provider value={{name: 'Text Context Api'}}>
+        <AppContext.Provider value={{theme, toggleTheme}}>
             {props.children}
         </AppContext.Provider>
     )
 }
 
 export default AppContext;
-
-export const AppConsumer = AppContext.Consumer;
