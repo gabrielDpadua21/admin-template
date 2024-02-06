@@ -8,7 +8,7 @@ const News = () => {
     
     return (
         <Layout title="News" subtitle="News page">
-            <h1>{data.name}</h1>
+            <h1>Content</h1>
         </Layout>
     );
 };
