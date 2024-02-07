@@ -18,3 +18,15 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .btn-change-theme {
+    @apply lg:w-24 w-14 h-8 sm:flex cursor-pointer items-center hidden rounded-full p-1;
+  }
+  .icon-change-theme {
+    @apply flex items-center justify-center w-6 h-6 rounded-full;
+  }
+  .text-change-theme {
+    @apply hidden lg:flex items-center ml-5;
+  }
+}
