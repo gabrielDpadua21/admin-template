@@ -3,6 +3,7 @@
 import AuthInput from "@/components/auth/AuthInput";
 import { useState } from "react";
 import "@/styles/globals.css";
+import { WarningIcon } from "@/components/icons";
 
 
 const Auth = () => {
@@ -10,9 +11,18 @@ const Auth = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [mode, setMode] = useState<'login' | 'register' | 'forgotPassword'>('login');
+    const [erro, setErro] = useState('');
 
     const send = () => {
         console.log('send');
+        showError('Erro ao fazer login')
+    }
+
+    const showError = (message: string, time = 5) => {
+        setErro(message);
+        setTimeout(() => {
+            setErro('');
+        }, time * 1000);
     }
 
     return (
@@ -21,6 +31,14 @@ const Auth = () => {
                 <h1 className={`text-xl font-bold mb-5`}>
                     {mode === 'login' ? 'Faça Login na sua conta' : 'Cadastre-se na Plataforma'}
                 </h1>
+
+                {erro && (
+                    <div className={`bg-red-400 text-white py-3 px-5 my-2 border border-red-700 flex items-center w-full rounded-lg`}>
+                        {WarningIcon}
+                        <span className={`ml-3`}>{erro}</span>
+                    </div>
+                )}
+
                 <AuthInput label="E-mail" type="email" value={mail} changeValue={setMail} isRequired />
                 <AuthInput label="Password" type="password" value={password} changeValue={setPassword} isRequired />
                 <AuthInput 
