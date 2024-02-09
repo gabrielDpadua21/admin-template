@@ -4,9 +4,13 @@ import AuthInput from "@/components/auth/AuthInput";
 import { useState } from "react";
 import "@/styles/globals.css";
 import { WarningIcon } from "@/components/icons";
+import useAuthData from "@/data/hook/useAuthData";
 
 
 const Auth = () => {
+
+    const { user, loginGoogle } = useAuthData();
+
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -52,7 +56,7 @@ const Auth = () => {
                     {mode === 'login' ? 'Entrar' : 'Cadastrar'}
                 </button>
                 <hr className={`my-2 w-full`} />
-                <button className={`bg-red-600 hover:bg-red-300 px-4 py-3 rounded-md text-white w-full `} onClick={send}>
+                <button className={`bg-red-600 hover:bg-red-300 px-4 py-3 rounded-md text-white w-full `} onClick={loginGoogle}>
                     Google Login
                 </button>
 
