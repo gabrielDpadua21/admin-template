@@ -5,8 +5,10 @@ import firebase from '../../firebase/config'
 import { createContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-async function userFromFirebase(userFirebase: firebase.User): Promise<User> {
-     const token = await userFirebase.getIdToken();
+async function userFromFirebase(userFirebase: firebase.User | null): Promise<User> {
+    if (userFirebase === null) throw new Error('Usuário não está logado');
+
+    const token = await userFirebase.getIdToken();
 
     return {
         uuid: userFirebase.uid,
@@ -31,7 +33,8 @@ export function AuthProvider(props: any) {
     const [user, setUser] = useState<User>();
 
     const loginGoogle = async () => {
-        console.log("loginGoogle");
+        const resp = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        setUser(await userFromFirebase(resp.user));
         router.push('/');
     };
 
