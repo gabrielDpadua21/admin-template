@@ -2,8 +2,9 @@
 
 import User from '@/model/User';
 import firebase from '../../firebase/config'
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Cookeis from 'js-cookie';
 
 async function userFromFirebase(userFirebase: firebase.User | null): Promise<User> {
     if (userFirebase === null) throw new Error('Usuário não está logado');
@@ -20,8 +21,16 @@ async function userFromFirebase(userFirebase: firebase.User | null): Promise<Use
     }
 }
 
+function managementCookie(isLogged: boolean) {
+    if (isLogged) {
+        Cookeis.set('admin-template', isLogged.toString(), {expires: 7});        
+    } else {
+        Cookeis.remove('admin-template');
+    }
+}
+
 interface AuthContextProps {
-    user?: User,
+    user?: User | null,
     loginGoogle?: () => Promise<void>,
 }
 
@@ -29,14 +38,34 @@ const AuthContext = createContext<AuthContextProps>({});
 
 export function AuthProvider(props: any) {
     const router = useRouter();
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User | null>();
 
-    const [user, setUser] = useState<User>();
+    const configSession = async (userFirebase: firebase.User | null) => {
+        if(userFirebase?.email) {
+            const user = await userFromFirebase(userFirebase);
+            setUser(user);
+            managementCookie(true);
+            setLoading(false);
+            return user.email;
+        }
+
+        setUser(null);
+        managementCookie(false);
+        setLoading(false);
+        return false;
+    }
 
     const loginGoogle = async () => {
         const resp = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        setUser(await userFromFirebase(resp.user));
+        await configSession(resp.user);
         router.push('/');
     };
+
+    useEffect(() => {
+        const cancel = firebase.auth().onIdTokenChanged(configSession);
+        return () => cancel();
+    }, []);
 
     return (
         <AuthContext.Provider value={{user, loginGoogle}}>
