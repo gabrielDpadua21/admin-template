@@ -4,6 +4,7 @@ import useAppData from "@/data/hook/useAppData";
 import AsideMenu from "./AsideMenu";
 import Content from "./Content";
 import TopBar from "./TopBar";
+import PrivateRoutes from "../auth/PrivateRoutes";
 
 interface LayoutProps {
     title: string;
@@ -17,13 +18,16 @@ const Layout = (props: LayoutProps) => {
     const { theme } = useAppData();
 
     return (
-        <div className={`flex h-screen w-screen ${theme}`}>
-            <AsideMenu />
-            <div className={`flex flex-col bg-gray-300 w-full p-7 dark:bg-gray-800`}>
-                <TopBar title={title} subtitle={subtitle} />
-                <Content>{children}</Content>
+        <PrivateRoutes>
+            <div className={`flex h-screen w-screen ${theme}`}>
+                <AsideMenu />
+                <div className={`flex flex-col bg-gray-300 w-full p-7 dark:bg-gray-800`}>
+                    <TopBar title={title} subtitle={subtitle} />
+                    <Content>{children}</Content>
+                </div>
             </div>
-        </div>
+        </PrivateRoutes>
+        
     )
 }
 

@@ -32,13 +32,15 @@ function managementCookie(isLogged: boolean) {
 interface AuthContextProps {
     user?: User | null,
     loginGoogle?: () => Promise<void>,
+    logout?: () => Promise<void>,
+    loading?: boolean
 }
 
 const AuthContext = createContext<AuthContextProps>({});
 
 export function AuthProvider(props: any) {
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<User | null>();
 
     const configSession = async (userFirebase: firebase.User | null) => {
@@ -57,18 +59,37 @@ export function AuthProvider(props: any) {
     }
 
     const loginGoogle = async () => {
-        const resp = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        await configSession(resp.user);
-        router.push('/');
+        try {
+            setLoading(true);
+            const resp = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+            await configSession(resp.user);
+            router.push('/');
+        } finally {
+            setLoading(false);
+        }
     };
 
+    const logout = async () => {
+        try {
+            setLoading(true);
+            await firebase.auth().signOut();
+            await configSession(null);
+            router.push('/auth');
+        } finally {
+            setLoading(false);
+        }
+        
+    }
+
     useEffect(() => {
-        const cancel = firebase.auth().onIdTokenChanged(configSession);
-        return () => cancel();
+        if (Cookeis.get('admin-tamplate')) {
+            const cancel = firebase.auth().onIdTokenChanged(configSession);
+            return () => cancel();
+        }
     }, []);
 
     return (
-        <AuthContext.Provider value={{user, loginGoogle}}>
+        <AuthContext.Provider value={{user, loginGoogle, logout, loading}}>
             {props.children}
         </AuthContext.Provider>
     )
