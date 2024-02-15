@@ -6,19 +6,21 @@ import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookeis from 'js-cookie';
 
-async function userFromFirebase(userFirebase: firebase.User | null): Promise<User> {
-    if (userFirebase === null) throw new Error('Usuário não está logado');
+async function userFromFirebase(userFirebase: firebase.User | null): Promise<User | null> {
+    if(userFirebase?.email) {
+        const token = await userFirebase.getIdToken();
 
-    const token = await userFirebase.getIdToken();
-
-    return {
-        uuid: userFirebase.uid,
-        email: userFirebase.email,
-        name: userFirebase.displayName,
-        token,
-        provider: userFirebase?.providerData[0]?.providerId,
-        imageUrl: userFirebase.photoURL,
+        return {
+            uuid: userFirebase.uid,
+            email: userFirebase.email,
+            name: userFirebase.displayName,
+            token,
+            provider: userFirebase?.providerData[0]?.providerId,
+            imageUrl: userFirebase.photoURL,
+        }
     }
+    
+    return null;
 }
 
 function managementCookie(isLogged: boolean) {
@@ -49,7 +51,7 @@ export function AuthProvider(props: any) {
             setUser(user);
             managementCookie(true);
             setLoading(false);
-            return user.email;
+            return user?.email;
         }
 
         setUser(null);

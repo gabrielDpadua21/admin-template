@@ -2,11 +2,11 @@
 
 import Image from "next/image"
 import Head from "next/head";
-import loadingGif from '../../../public/loading.gif';
+import loadingGif from '../../public/loading.gif';
 import useAuthData from "@/data/hook/useAuthData";
 import { useRouter } from 'next/navigation';
 
-const PrivateRoutes = (props: any) => {
+const PrivateRoutes = (jsx: any) => {
 
     const {user, loading} = useAuthData();
     const router = useRouter();
@@ -23,7 +23,7 @@ const PrivateRoutes = (props: any) => {
                         `}
                     </script>
                 </Head>
-                {props.children}
+                {jsx}
             </>
         )
     }
