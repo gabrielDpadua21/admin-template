@@ -36,8 +36,6 @@ const PrivateRoutes = (props: any) => {
         )
     }
 
-    console.log(user);
-
     if (loading) return renderLoading()
     if (!loading && user?.email) return renderContent()
     router.push('/auth')

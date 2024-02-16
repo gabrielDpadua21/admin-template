@@ -9,23 +9,27 @@ import useAuthData from "@/data/hook/useAuthData";
 
 const Auth = () => {
 
-    const { user, loginGoogle } = useAuthData();
+    const { user, loginGoogle, login, register } = useAuthData();
 
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [mode, setMode] = useState<'login' | 'register' | 'forgotPassword'>('login');
-    const [erro, setErro] = useState('');
+    const [erro, setErro] = useState<string | null>(null);
 
-    const send = () => {
-        console.log('send');
-        showError('Erro ao fazer login')
+    const send = async () => {
+        try {
+            if (mode === 'login' && login) await login(mail, password);
+            if (mode === 'register' && register) await register(mail, password);
+        } catch (e: any) {
+            showError(e.message ?? 'Erro desconhecido');
+        }
     }
 
-    const showError = (message: string, time = 5) => {
+    const showError = (message: any, time = 5) => {
         setErro(message);
         setTimeout(() => {
-            setErro('');
+            setErro(null);
         }, time * 1000);
     }
 
